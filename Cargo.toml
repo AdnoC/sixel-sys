@@ -1,0 +1,31 @@
+[package]
+name = "sixel-sys"
+version = "0.1.0"
+authors = ["AdnoC <adam.r.cutler@gmail.com>"]
+links="sixel"
+build="build.rs"
+
+[dependencies]
+# Optional libsixel dependencies
+curl-sys = { version = "0.3.11", optional = true}
+#libgd
+gdk-pixbuf-sys = { version = "0.3.4", optional = true}
+# Drop-in libjpeg replacement
+mozjpeg-sys = { version = "0.3.3", optional = true }
+#libpng git: git://git.code.sf.net/p/libpng/code
+# png-sys = { git = , optional = true }
+
+[build-dependencies]
+make-cmd = "0.1.0"
+
+[features]
+curl = ["curl-sys"]
+jpeg = ["mozjpeg-sys"]
+pixbuf = ["gdk-pixbuf-sys"]
+# Need to handle these eventually
+png = []
+gd = []
+# Maybe I should just turn this off regardless
+# 99% of the time it won't be needed
+python_interface = []
+
