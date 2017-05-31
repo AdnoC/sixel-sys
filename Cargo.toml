@@ -17,6 +17,7 @@ mozjpeg-sys = { version = "0.3.3", optional = true }
 
 [build-dependencies]
 make-cmd = "0.1.0"
+bindgen = "0.23"
 
 [features]
 curl = ["curl-sys"]

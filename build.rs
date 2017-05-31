@@ -1,5 +1,6 @@
 #![allow(unused_variables)]
 
+extern crate bindgen;
 extern crate make_cmd;
 
 use make_cmd::make;
@@ -13,11 +14,17 @@ const LIBSIXEL_DIR: &str = "libsixel";
 
 fn main() {
 
-    // println!("--- BEGIN VARS ---");
-    // for (key, val) in env::vars() {
-    //     println!("{}: {}", key, val);
-    // }
-    // println!("--- END VARS ---");
+    let out_dir = env::var("OUT_DIR").unwrap();
+    let out_dir = Path::new(&out_dir);
+
+    println!("cargo:rustc-link-lib=dylib=sixel");
+    // println!("cargo:rustc-link-lib=static=sixel");
+    println!("cargo:rustc-link-search=native={}", out_dir.join("lib").display());
+
+    if 1 == 1 {
+        return;
+    }
+
     let curl = has_feature("curl");
     let jpeg = has_feature("jpeg");
     let pixbuf = has_feature("pixbuf");
@@ -26,20 +33,16 @@ fn main() {
     let python_interface = has_feature("python_interface");
 
 
-    let out_dir = env::var("OUT_DIR").unwrap();
-    let out_dir = Path::new(&out_dir);
     let sixel_dir = Path::new(LIBSIXEL_DIR);
 
 
     {
-        // ./configure
-        // make
-        // make install
-        println!("Running ./configure");
         let mut cmd = Command::new("./configure");
         cmd.current_dir(sixel_dir)
             .arg("--prefix")
             .arg(out_dir);
+
+        // cmd.arg("-fPIC");
 
         if curl {
             cmd.arg("--with-libcurl");
@@ -67,9 +70,18 @@ fn main() {
             .current_dir(sixel_dir)
             .status().expect("Failed to execute make");
 
-
-        // cmd.status();
     }
+
+    let bindings = bindgen::Builder::default()
+        .no_unstable_rust()
+        .header("wrapper.h")
+        .hide_type("max_align_t")
+        .generate()
+        .expect("Unable to generate bindings");
+
+    bindings
+        .write_to_file(out_dir.join("bindings.rs"))
+        .expect("Couldn't write bindings");
 }
 
 const FEATURE_PREFIX: &str = "CARGO_FEATURE_";
