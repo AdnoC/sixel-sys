@@ -21,9 +21,6 @@ fn main() {
     // println!("cargo:rustc-link-lib=static=sixel");
     println!("cargo:rustc-link-search=native={}", out_dir.join("lib").display());
 
-    if 1 == 1 {
-        return;
-    }
 
     let curl = has_feature("curl");
     let jpeg = has_feature("jpeg");
