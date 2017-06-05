@@ -1,3 +1,7 @@
+//! Bindings to libsixel
+//!
+//! For additional information, please check [its repo](https://github.com/saitoha/libsixel)
+
 #![allow(non_camel_case_types)]
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
