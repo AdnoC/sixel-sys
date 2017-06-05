@@ -2,8 +2,19 @@
 name = "sixel-sys"
 version = "0.1.0"
 authors = ["AdnoC <adam.r.cutler@gmail.com>"]
-links="sixel"
-build="build.rs"
+
+description = "FFI bindings to libsixel"
+keywords = ["sixel", "libsixel", "image"]
+
+license = "MIT"
+readme = "README.md"
+
+homepage = "https://github.com/AdnoC/sixel-sys"
+repository = "https://github.com/AdnoC/sixel-sys"
+
+links = "sixel"
+
+build = "build.rs"
 
 [dependencies]
 # Optional libsixel dependencies
