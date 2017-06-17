@@ -1,6 +1,6 @@
 #![allow(unused_variables)]
 
-extern crate bindgen;
+// extern crate bindgen;
 extern crate make_cmd;
 
 use make_cmd::make;
@@ -14,12 +14,20 @@ const LIBSIXEL_DIR: &str = "libsixel";
 
 fn main() {
 
+    let testing_build = true;
+
+
     let out_dir = env::var("OUT_DIR").unwrap();
     let out_dir = Path::new(&out_dir);
 
     println!("cargo:rustc-link-lib=dylib=sixel");
     // println!("cargo:rustc-link-lib=static=sixel");
     println!("cargo:rustc-link-search=native={}", out_dir.join("lib").display());
+
+
+    if testing_build {
+        return;
+    }
 
 
     let curl = has_feature("curl");
@@ -69,17 +77,23 @@ fn main() {
 
     }
 
-    let bindings = bindgen::Builder::default()
-        .no_unstable_rust()
-        .header("wrapper.h")
-        .hide_type("max_align_t")
-        .generate()
-        .expect("Unable to generate bindings");
+    // generate_bindings(out_dir);
+    
 
-    bindings
-        .write_to_file(out_dir.join("bindings.rs"))
-        .expect("Couldn't write bindings");
 }
+
+// fn generate_bindings(out_dir: &Path) {
+//     let bindings = bindgen::Builder::default()
+//         .no_unstable_rust()
+//         .header("wrapper.h")
+//         .hide_type("max_align_t")
+//         .generate()
+//         .expect("Unable to generate bindings");
+//
+//     bindings
+//         .write_to_file(out_dir.join("bindings.rs"))
+//         .expect("Couldn't write bindings");
+// }
 
 const FEATURE_PREFIX: &str = "CARGO_FEATURE_";
 fn has_feature(feature: &'static str) -> bool {
