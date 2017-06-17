@@ -14,7 +14,7 @@ const LIBSIXEL_DIR: &str = "libsixel";
 
 fn main() {
 
-    let testing_build = true;
+    let testing_build = false;
 
 
     let out_dir = env::var("OUT_DIR").unwrap();
