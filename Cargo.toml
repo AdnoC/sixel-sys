@@ -30,6 +30,9 @@ mozjpeg-sys = { version = "0.3.3", optional = true }
 make-cmd = "0.1.0"
 # bindgen = "0.23"
 
+[dev-dependencies]
+lazy_static = "0.2.8"
+
 [features]
 curl = ["curl-sys"]
 jpeg = ["mozjpeg-sys"]
