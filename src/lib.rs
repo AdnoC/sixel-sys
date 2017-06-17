@@ -443,9 +443,7 @@ pub type sixel_realloc_t =
 pub type sixel_free_t =
     Option<unsafe extern "C" fn(object:
                                                    *mut c_void)>;
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct sixel_allocator([u8; 0]);
+pub enum sixel_allocator {}
 pub type sixel_allocator_t = sixel_allocator;
 extern "C" {
     pub fn sixel_allocator_new(ppallocator: *mut *mut sixel_allocator_t,
@@ -453,31 +451,20 @@ extern "C" {
                                fn_calloc: sixel_calloc_t,
                                fn_realloc: sixel_realloc_t,
                                fn_free: sixel_free_t) -> Status;
-}
-extern "C" {
     pub fn sixel_allocator_ref(allocator: *mut sixel_allocator_t);
-}
-extern "C" {
     pub fn sixel_allocator_unref(allocator: *mut sixel_allocator_t);
-}
-extern "C" {
     pub fn sixel_allocator_malloc(allocator: *mut sixel_allocator_t, n: usize)
      -> *mut c_void;
-}
-extern "C" {
     pub fn sixel_allocator_calloc(allocator: *mut sixel_allocator_t,
                                   nelm: usize, elsize: usize)
      -> *mut c_void;
-}
-extern "C" {
     pub fn sixel_allocator_realloc(allocator: *mut sixel_allocator_t,
                                    p: *mut c_void, n: usize)
      -> *mut c_void;
-}
-extern "C" {
     pub fn sixel_allocator_free(allocator: *mut sixel_allocator_t,
                                 p: *mut c_void);
 }
+
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct sixel_output([u8; 0]);
