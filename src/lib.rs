@@ -64,6 +64,14 @@ pub const BAD_INPUT: Status = RUNTIME_ERROR | 0x0002;
 /// Feature not implemented
 pub const NOT_IMPLEMENTED: Status = FEATURE_ERROR | 0x0001;
 
+#[repr(C)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+/// Output character size
+pub enum CharacterSize {
+    SevenBit = 0,
+    EightBit = 1
+}
+
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
@@ -424,13 +432,7 @@ pub enum Optflag {
     /// Print a help message
     Help = b'H',
 }
-#[repr(C)]
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-/// Output character size
-pub enum CharacterSize { 
-    SevenBit = 0,
-    EightBit = 1
-}
+
 pub type sixel_malloc_t =
     ::std::option::Option<unsafe extern "C" fn(size: usize)>;
 pub type sixel_calloc_t =
