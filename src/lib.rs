@@ -525,7 +525,8 @@ extern "C" {
                                    method_for_rep: MethodForRepColor,
                                    quality_mode: QualityMode)
                                    -> Status;
-    pub fn sixel_dither_set_diffusion_type(dither: *mut Dither, method_for_diffuse: DiffusionMethod);
+    pub fn sixel_dither_set_diffusion_type(dither: *mut Dither,
+                                           method_for_diffuse: DiffusionMethod);
     pub fn sixel_dither_get_num_of_palette_colors(dither: *mut Dither) -> c_int;
     pub fn sixel_dither_get_num_of_histogram_colors(dither: *mut Dither) -> c_int;
     pub fn sixel_dither_get_num_of_histgram_colors(dither: *mut Dither) -> c_int;
