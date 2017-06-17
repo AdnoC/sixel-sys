@@ -281,16 +281,22 @@ pub enum LoopMode {
 
 #[repr(u8)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-/// Flags used in the easy encoder/decoder API.
+/// Flags used in the easy decoder API.
+pub enum DecoderOptflag {
+    /// Specify input file name
+    Input = b'i',
+    /// Specify output file name
+    Output = b'o',
+}
+
+#[repr(u8)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+/// Flags used in the easy encoder API.
 ///
 /// Flags are the same as the ones used in the img2sixel executable
 pub enum Optflag {
-    // CONFLICTS WITH INVERT FLAG
-    // /// Specify input file name
-    // Input = b'i',
     /// Specify output file name
-    Output = b'o',
-    // OutFile = b'o',
+    OutFile = b'o',
     /// Use sixel images for 7 bit terminals or printers
     ///
     /// Default of the 2 bit mode flags
@@ -652,7 +658,7 @@ extern "C" {
     pub fn sixel_encoder_unref(encoder: *mut Encoder);
     pub fn sixel_encoder_set_cancel_flag(encoder: *mut Encoder, cancel_flag: *mut c_int) -> Status;
     pub fn sixel_encoder_setopt(encoder: *mut Encoder,
-                                arg: c_int,
+                                arg: Optflag,
                                 optarg: *const c_char)
                                 -> Status;
     pub fn sixel_encoder_encode(encoder: *mut Encoder, filename: *const c_char) -> Status;
@@ -673,7 +679,7 @@ extern "C" {
     pub fn sixel_decoder_ref(decoder: *mut Decoder);
     pub fn sixel_decoder_unref(decoder: *mut Decoder);
     pub fn sixel_decoder_setopt(decoder: *mut Decoder,
-                                arg: c_int,
+                                arg: DecoderOptflag,
                                 optarg: *const c_char)
                                 -> Status;
     pub fn sixel_decoder_decode(decoder: *mut Decoder) -> Status;
