@@ -432,10 +432,10 @@ pub enum Optflag {
     Help = b'H',
 }
 
-pub type malloc_function = Option<unsafe extern "C" fn(size: usize) -> *mut c_void>;
-pub type calloc_function = Option<unsafe extern "C" fn(num_items: usize, size: usize) -> *mut c_void>;
-pub type realloc_function = Option<unsafe extern "C" fn(object: *mut c_void, new_size: usize) -> *mut c_void>;
-pub type free_function = Option<unsafe extern "C" fn(object: *mut c_void)>;
+pub type MallocFn = Option<unsafe extern "C" fn(size: usize) -> *mut c_void>;
+pub type CallocFn = Option<unsafe extern "C" fn(num_items: usize, size: usize) -> *mut c_void>;
+pub type ReallocFn = Option<unsafe extern "C" fn(object: *mut c_void, new_size: usize) -> *mut c_void>;
+pub type FreeFn = Option<unsafe extern "C" fn(object: *mut c_void)>;
 
 /// Can be passed to API functions to control allocation
 pub enum Allocator {}
@@ -443,10 +443,10 @@ pub enum Allocator {}
 extern "C" {
     /// Create a new allocator
     pub fn sixel_allocator_new(ppallocator: *mut *mut Allocator,
-                               fn_malloc: malloc_function,
-                               fn_calloc: calloc_function,
-                               fn_realloc: realloc_function,
-                               fn_free: free_function)
+                               fn_malloc: MallocFn,
+                               fn_calloc: CallocFn,
+                               fn_realloc: ReallocFn,
+                               fn_free: FreeFn)
                                -> Status;
     pub fn sixel_allocator_ref(allocator: *mut Allocator);
     pub fn sixel_allocator_unref(allocator: *mut Allocator);
@@ -465,19 +465,19 @@ extern "C" {
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct Output([u8; 0]);
-pub type sixel_write_function = ::std::option::Option<unsafe extern "C" fn(data: *mut c_char,
+pub type WriteFn = ::std::option::Option<unsafe extern "C" fn(data: *mut c_char,
                                                                            size: c_int,
                                                                            priv_: *mut c_void)
                                                                            -> c_int>;
 extern "C" {
     pub fn sixel_output_new(output: *mut *mut Output,
-                            fn_write: sixel_write_function,
+                            fn_write: WriteFn,
                             priv_: *mut c_void,
                             allocator: *mut Allocator)
                             -> Status;
 }
 extern "C" {
-    pub fn sixel_output_create(fn_write: sixel_write_function,
+    pub fn sixel_output_create(fn_write: WriteFn,
                                priv_: *mut c_void)
                                -> *mut Output;
 }
@@ -580,8 +580,6 @@ extern "C" {
 extern "C" {
     pub fn sixel_dither_set_transparent(dither: *mut Dither, transparent: c_int);
 }
-pub type sixel_allocator_function = ::std::option::Option<unsafe extern "C" fn(size: usize)
-                                                                               -> *mut c_void>;
 extern "C" {
     pub fn sixel_encode(pixels: *mut c_uchar,
                         width: c_int,
@@ -610,7 +608,7 @@ extern "C" {
                         pheight: *mut c_int,
                         palette: *mut *mut c_uchar,
                         ncolors: *mut c_int,
-                        fn_malloc: sixel_allocator_function)
+                        fn_malloc: MallocFn)
                         -> Status;
 }
 extern "C" {
@@ -724,9 +722,9 @@ extern "C" {
                             height: c_int)
                             -> Status;
 }
-pub type sixel_load_image_function =
-    ::std::option::Option<unsafe extern "C" fn(frame: *mut Frame, context: *mut c_void)
-                                               -> Status>;
+
+pub type LoadImageFn =
+    Option<unsafe extern "C" fn(frame: *mut Frame, context: *mut c_void) -> Status>;
 extern "C" {
     pub fn sixel_helper_load_image_file(filename: *const c_char,
                                         fstatic: c_int,
@@ -734,7 +732,7 @@ extern "C" {
                                         reqcolors: c_int,
                                         bgcolor: *mut c_uchar,
                                         loop_control: c_int,
-                                        fn_load: sixel_load_image_function,
+                                        fn_load: LoadImageFn,
                                         finsecure: c_int,
                                         cancel_flag: *const c_int,
                                         context: *mut c_void,
