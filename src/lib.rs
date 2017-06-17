@@ -434,7 +434,8 @@ pub enum Optflag {
 
 pub type MallocFn = Option<unsafe extern "C" fn(size: usize) -> *mut c_void>;
 pub type CallocFn = Option<unsafe extern "C" fn(num_items: usize, size: usize) -> *mut c_void>;
-pub type ReallocFn = Option<unsafe extern "C" fn(object: *mut c_void, new_size: usize) -> *mut c_void>;
+pub type ReallocFn = Option<unsafe extern "C" fn(object: *mut c_void, new_size: usize)
+                                                 -> *mut c_void>;
 pub type FreeFn = Option<unsafe extern "C" fn(object: *mut c_void)>;
 
 /// Can be passed to API functions to control allocation
@@ -464,18 +465,16 @@ extern "C" {
 
 pub enum Output {}
 pub type WriteFn = ::std::option::Option<unsafe extern "C" fn(data: *mut c_char,
-                                                                           size: c_int,
-                                                                           priv_: *mut c_void)
-                                                                           -> c_int>;
+                                                              size: c_int,
+                                                              priv_: *mut c_void)
+                                                              -> c_int>;
 extern "C" {
     pub fn sixel_output_new(output: *mut *mut Output,
                             fn_write: WriteFn,
                             priv_: *mut c_void,
                             allocator: *mut Allocator)
                             -> Status;
-    pub fn sixel_output_create(fn_write: WriteFn,
-                               priv_: *mut c_void)
-                               -> *mut Output;
+    pub fn sixel_output_create(fn_write: WriteFn, priv_: *mut c_void) -> *mut Output;
     pub fn sixel_output_destroy(output: *mut Output);
     pub fn sixel_output_ref(output: *mut Output);
     pub fn sixel_output_unref(output: *mut Output);
@@ -508,8 +507,7 @@ extern "C" {
                                    method_for_rep: c_int,
                                    quality_mode: c_int)
                                    -> Status;
-    pub fn sixel_dither_set_diffusion_type(dither: *mut Dither,
-                                           method_for_diffuse: c_int);
+    pub fn sixel_dither_set_diffusion_type(dither: *mut Dither, method_for_diffuse: c_int);
     pub fn sixel_dither_get_num_of_palette_colors(dither: *mut Dither) -> c_int;
     pub fn sixel_dither_get_num_of_histogram_colors(dither: *mut Dither) -> c_int;
     pub fn sixel_dither_get_num_of_histgram_colors(dither: *mut Dither) -> c_int;
@@ -574,9 +572,7 @@ extern "C" {
 
 pub enum Frame {}
 extern "C" {
-    pub fn sixel_frame_new(ppframe: *mut *mut Frame,
-                           allocator: *mut Allocator)
-                           -> Status;
+    pub fn sixel_frame_new(ppframe: *mut *mut Frame, allocator: *mut Allocator) -> Status;
     pub fn sixel_frame_create() -> *mut Frame;
     pub fn sixel_frame_ref(frame: *mut Frame);
     pub fn sixel_frame_unref(frame: *mut Frame);
@@ -613,8 +609,8 @@ extern "C" {
                             -> Status;
 }
 
-pub type LoadImageFn =
-    Option<unsafe extern "C" fn(frame: *mut Frame, context: *mut c_void) -> Status>;
+pub type LoadImageFn = Option<unsafe extern "C" fn(frame: *mut Frame, context: *mut c_void)
+                                                   -> Status>;
 extern "C" {
     pub fn sixel_helper_load_image_file(filename: *const c_char,
                                         fstatic: c_int,
@@ -641,15 +637,11 @@ extern "C" {
 
 pub enum Encoder {}
 extern "C" {
-    pub fn sixel_encoder_new(ppencoder: *mut *mut Encoder,
-                             allocator: *mut Allocator)
-                             -> Status;
+    pub fn sixel_encoder_new(ppencoder: *mut *mut Encoder, allocator: *mut Allocator) -> Status;
     pub fn sixel_encoder_create() -> *mut Encoder;
     pub fn sixel_encoder_ref(encoder: *mut Encoder);
     pub fn sixel_encoder_unref(encoder: *mut Encoder);
-    pub fn sixel_encoder_set_cancel_flag(encoder: *mut Encoder,
-                                         cancel_flag: *mut c_int)
-                                         -> Status;
+    pub fn sixel_encoder_set_cancel_flag(encoder: *mut Encoder, cancel_flag: *mut c_int) -> Status;
     pub fn sixel_encoder_setopt(encoder: *mut Encoder,
                                 arg: c_int,
                                 optarg: *const c_char)
@@ -667,9 +659,7 @@ extern "C" {
 
 pub enum Decoder {}
 extern "C" {
-    pub fn sixel_decoder_new(ppdecoder: *mut *mut Decoder,
-                             allocator: *mut Allocator)
-                             -> Status;
+    pub fn sixel_decoder_new(ppdecoder: *mut *mut Decoder, allocator: *mut Allocator) -> Status;
     pub fn sixel_decoder_create() -> *mut Decoder;
     pub fn sixel_decoder_ref(decoder: *mut Decoder);
     pub fn sixel_decoder_unref(decoder: *mut Decoder);
