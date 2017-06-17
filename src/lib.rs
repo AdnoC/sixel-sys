@@ -475,40 +475,18 @@ extern "C" {
                             priv_: *mut c_void,
                             allocator: *mut Allocator)
                             -> Status;
-}
-extern "C" {
     pub fn sixel_output_create(fn_write: WriteFn,
                                priv_: *mut c_void)
                                -> *mut Output;
-}
-extern "C" {
     pub fn sixel_output_destroy(output: *mut Output);
-}
-extern "C" {
     pub fn sixel_output_ref(output: *mut Output);
-}
-extern "C" {
     pub fn sixel_output_unref(output: *mut Output);
-}
-extern "C" {
     pub fn sixel_output_get_8bit_availability(output: *mut Output) -> c_int;
-}
-extern "C" {
     pub fn sixel_output_set_8bit_availability(output: *mut Output, availability: c_int);
-}
-extern "C" {
     pub fn sixel_output_set_gri_arg_limit(output: *mut Output, value: c_int);
-}
-extern "C" {
     pub fn sixel_output_set_penetrate_multiplexer(output: *mut Output, penetrate: c_int);
-}
-extern "C" {
     pub fn sixel_output_set_skip_dcs_envelope(output: *mut Output, skip: c_int);
-}
-extern "C" {
     pub fn sixel_output_set_palette_type(output: *mut Output, palettetype: c_int);
-}
-extern "C" {
     pub fn sixel_output_set_encode_policy(output: *mut Output, encode_policy: c_int);
 }
 #[repr(C)]
@@ -519,23 +497,11 @@ extern "C" {
                             ncolors: c_int,
                             allocator: *mut Allocator)
                             -> Status;
-}
-extern "C" {
     pub fn sixel_dither_create(ncolors: c_int) -> *mut Dither;
-}
-extern "C" {
     pub fn sixel_dither_get(builtin_dither: c_int) -> *mut Dither;
-}
-extern "C" {
     pub fn sixel_dither_destroy(dither: *mut Dither);
-}
-extern "C" {
     pub fn sixel_dither_ref(dither: *mut Dither);
-}
-extern "C" {
     pub fn sixel_dither_unref(dither: *mut Dither);
-}
-extern "C" {
     pub fn sixel_dither_initialize(dither: *mut Dither,
                                    data: *mut c_uchar,
                                    width: c_int,
@@ -545,39 +511,17 @@ extern "C" {
                                    method_for_rep: c_int,
                                    quality_mode: c_int)
                                    -> Status;
-}
-extern "C" {
     pub fn sixel_dither_set_diffusion_type(dither: *mut Dither,
                                            method_for_diffuse: c_int);
-}
-extern "C" {
     pub fn sixel_dither_get_num_of_palette_colors(dither: *mut Dither) -> c_int;
-}
-extern "C" {
     pub fn sixel_dither_get_num_of_histogram_colors(dither: *mut Dither) -> c_int;
-}
-extern "C" {
     pub fn sixel_dither_get_num_of_histgram_colors(dither: *mut Dither) -> c_int;
-}
-extern "C" {
     pub fn sixel_dither_get_palette(dither: *mut Dither) -> *mut c_uchar;
-}
-extern "C" {
     pub fn sixel_dither_set_palette(dither: *mut Dither, palette: *mut c_uchar);
-}
-extern "C" {
     pub fn sixel_dither_set_complexion_score(dither: *mut Dither, score: c_int);
-}
-extern "C" {
     pub fn sixel_dither_set_body_only(dither: *mut Dither, bodyonly: c_int);
-}
-extern "C" {
     pub fn sixel_dither_set_optimize_palette(dither: *mut Dither, do_opt: c_int);
-}
-extern "C" {
     pub fn sixel_dither_set_pixelformat(dither: *mut Dither, pixelformat: c_int);
-}
-extern "C" {
     pub fn sixel_dither_set_transparent(dither: *mut Dither, transparent: c_int);
 }
 extern "C" {
@@ -588,8 +532,6 @@ extern "C" {
                         dither: *mut Dither,
                         context: *mut Output)
                         -> Status;
-}
-extern "C" {
     pub fn sixel_decode_raw(p: *mut c_uchar,
                             len: c_int,
                             pixels: *mut *mut c_uchar,
@@ -599,8 +541,6 @@ extern "C" {
                             ncolors: *mut c_int,
                             allocator: *mut Allocator)
                             -> Status;
-}
-extern "C" {
     pub fn sixel_decode(sixels: *mut c_uchar,
                         size: c_int,
                         pixels: *mut *mut c_uchar,
@@ -613,17 +553,9 @@ extern "C" {
 }
 extern "C" {
     pub fn sixel_helper_set_additional_message(message: *const c_char);
-}
-extern "C" {
     pub fn sixel_helper_get_additional_message() -> *const c_char;
-}
-extern "C" {
     pub fn sixel_helper_format_error(status: Status) -> *const c_char;
-}
-extern "C" {
     pub fn sixel_helper_compute_depth(pixelformat: c_int) -> c_int;
-}
-extern "C" {
     pub fn sixel_helper_normalize_pixelformat(dst: *mut c_uchar,
                                               dst_pixelformat: *mut c_int,
                                               src: *const c_uchar,
@@ -631,8 +563,6 @@ extern "C" {
                                               width: c_int,
                                               height: c_int)
                                               -> Status;
-}
-extern "C" {
     pub fn sixel_helper_scale_image(dst: *mut c_uchar,
                                     src: *const c_uchar,
                                     srcw: c_int,
@@ -651,17 +581,9 @@ extern "C" {
     pub fn sixel_frame_new(ppframe: *mut *mut Frame,
                            allocator: *mut Allocator)
                            -> Status;
-}
-extern "C" {
     pub fn sixel_frame_create() -> *mut Frame;
-}
-extern "C" {
     pub fn sixel_frame_ref(frame: *mut Frame);
-}
-extern "C" {
     pub fn sixel_frame_unref(frame: *mut Frame);
-}
-extern "C" {
     pub fn sixel_frame_init(frame: *mut Frame,
                             pixels: *mut c_uchar,
                             width: c_int,
@@ -670,51 +592,23 @@ extern "C" {
                             palette: *mut c_uchar,
                             ncolors: c_int)
                             -> Status;
-}
-extern "C" {
     pub fn sixel_frame_get_pixels(frame: *mut Frame) -> *mut c_uchar;
-}
-extern "C" {
     pub fn sixel_frame_get_palette(frame: *mut Frame) -> *mut c_uchar;
-}
-extern "C" {
     pub fn sixel_frame_get_width(frame: *mut Frame) -> c_int;
-}
-extern "C" {
     pub fn sixel_frame_get_height(frame: *mut Frame) -> c_int;
-}
-extern "C" {
     pub fn sixel_frame_get_ncolors(frame: *mut Frame) -> c_int;
-}
-extern "C" {
     pub fn sixel_frame_get_pixelformat(frame: *mut Frame) -> c_int;
-}
-extern "C" {
     pub fn sixel_frame_get_transparent(frame: *mut Frame) -> c_int;
-}
-extern "C" {
     pub fn sixel_frame_get_multiframe(frame: *mut Frame) -> c_int;
-}
-extern "C" {
     pub fn sixel_frame_get_delay(frame: *mut Frame) -> c_int;
-}
-extern "C" {
     pub fn sixel_frame_get_frame_no(frame: *mut Frame) -> c_int;
-}
-extern "C" {
     pub fn sixel_frame_get_loop_no(frame: *mut Frame) -> c_int;
-}
-extern "C" {
     pub fn sixel_frame_strip_alpha(frame: *mut Frame, bgcolor: *mut c_uchar) -> c_int;
-}
-extern "C" {
     pub fn sixel_frame_resize(frame: *mut Frame,
                               width: c_int,
                               height: c_int,
                               method_for_resampling: c_int)
                               -> Status;
-}
-extern "C" {
     pub fn sixel_frame_clip(frame: *mut Frame,
                             x: c_int,
                             y: c_int,
@@ -738,8 +632,6 @@ extern "C" {
                                         context: *mut c_void,
                                         allocator: *mut Allocator)
                                         -> Status;
-}
-extern "C" {
     pub fn sixel_helper_write_image_file(data: *mut c_uchar,
                                          width: c_int,
                                          height: c_int,
@@ -757,31 +649,17 @@ extern "C" {
     pub fn sixel_encoder_new(ppencoder: *mut *mut Encoder,
                              allocator: *mut Allocator)
                              -> Status;
-}
-extern "C" {
     pub fn sixel_encoder_create() -> *mut Encoder;
-}
-extern "C" {
     pub fn sixel_encoder_ref(encoder: *mut Encoder);
-}
-extern "C" {
     pub fn sixel_encoder_unref(encoder: *mut Encoder);
-}
-extern "C" {
     pub fn sixel_encoder_set_cancel_flag(encoder: *mut Encoder,
                                          cancel_flag: *mut c_int)
                                          -> Status;
-}
-extern "C" {
     pub fn sixel_encoder_setopt(encoder: *mut Encoder,
                                 arg: c_int,
                                 optarg: *const c_char)
                                 -> Status;
-}
-extern "C" {
     pub fn sixel_encoder_encode(encoder: *mut Encoder, filename: *const c_char) -> Status;
-}
-extern "C" {
     pub fn sixel_encoder_encode_bytes(encoder: *mut Encoder,
                                       bytes: *mut c_uchar,
                                       width: c_int,
@@ -798,22 +676,12 @@ extern "C" {
     pub fn sixel_decoder_new(ppdecoder: *mut *mut Decoder,
                              allocator: *mut Allocator)
                              -> Status;
-}
-extern "C" {
     pub fn sixel_decoder_create() -> *mut Decoder;
-}
-extern "C" {
     pub fn sixel_decoder_ref(decoder: *mut Decoder);
-}
-extern "C" {
     pub fn sixel_decoder_unref(decoder: *mut Decoder);
-}
-extern "C" {
     pub fn sixel_decoder_setopt(decoder: *mut Decoder,
                                 arg: c_int,
                                 optarg: *const c_char)
                                 -> Status;
-}
-extern "C" {
     pub fn sixel_decoder_decode(decoder: *mut Decoder) -> Status;
 }
