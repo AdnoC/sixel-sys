@@ -462,9 +462,7 @@ extern "C" {
     pub fn sixel_allocator_free(allocator: *mut Allocator, p: *mut c_void);
 }
 
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct Output([u8; 0]);
+pub enum Output {}
 pub type WriteFn = ::std::option::Option<unsafe extern "C" fn(data: *mut c_char,
                                                                            size: c_int,
                                                                            priv_: *mut c_void)
@@ -489,9 +487,8 @@ extern "C" {
     pub fn sixel_output_set_palette_type(output: *mut Output, palettetype: c_int);
     pub fn sixel_output_set_encode_policy(output: *mut Output, encode_policy: c_int);
 }
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct Dither([u8; 0]);
+
+pub enum Dither {}
 extern "C" {
     pub fn sixel_dither_new(ppdither: *mut *mut Dither,
                             ncolors: c_int,
@@ -574,9 +571,8 @@ extern "C" {
                                     allocator: *mut Allocator)
                                     -> Status;
 }
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct Frame([u8; 0]);
+
+pub enum Frame {}
 extern "C" {
     pub fn sixel_frame_new(ppframe: *mut *mut Frame,
                            allocator: *mut Allocator)
@@ -642,9 +638,8 @@ extern "C" {
                                          allocator: *mut Allocator)
                                          -> Status;
 }
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct Encoder([u8; 0]);
+
+pub enum Encoder {}
 extern "C" {
     pub fn sixel_encoder_new(ppencoder: *mut *mut Encoder,
                              allocator: *mut Allocator)
@@ -669,9 +664,8 @@ extern "C" {
                                       ncolors: c_int)
                                       -> Status;
 }
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-pub struct Decoder([u8; 0]);
+
+pub enum Decoder {}
 extern "C" {
     pub fn sixel_decoder_new(ppdecoder: *mut *mut Decoder,
                              allocator: *mut Allocator)
