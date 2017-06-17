@@ -1,4 +1,7 @@
-#![allow(non_camel_case_types)]
+//! Bindings to libsixel
+//!
+//! For additional information, please check [its repo](https://github.com/saitoha/libsixel)
+
 
 use std::os::raw::{c_void, c_int, c_char, c_uchar};
 
