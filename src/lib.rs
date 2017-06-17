@@ -11,6 +11,7 @@
 
 use std::os::raw::{c_void, c_int, c_char, c_uchar};
 
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct Version {
     pub major: u8,
     pub minor: u8,
@@ -424,7 +425,7 @@ pub enum Optflag {
     ///
     /// Represented by the following syntax:
     ///
-    /// ```
+    /// ```txt
     /// #rgb
     /// #rrggbb
     /// #rrrgggbbb
