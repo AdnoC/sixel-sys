@@ -432,9 +432,9 @@ pub enum Optflag {
     Help = b'H',
 }
 
-pub type malloc_function = Option<unsafe extern "C" fn(size: usize)>;
-pub type calloc_function = Option<unsafe extern "C" fn(num_items: usize, size: usize)>;
-pub type realloc_function = Option<unsafe extern "C" fn(object: *mut c_void, new_size: usize)>;
+pub type malloc_function = Option<unsafe extern "C" fn(size: usize) -> *mut c_void>;
+pub type calloc_function = Option<unsafe extern "C" fn(num_items: usize, size: usize) -> *mut c_void>;
+pub type realloc_function = Option<unsafe extern "C" fn(object: *mut c_void, new_size: usize) -> *mut c_void>;
 pub type free_function = Option<unsafe extern "C" fn(object: *mut c_void)>;
 
 /// Can be passed to API functions to control allocation
