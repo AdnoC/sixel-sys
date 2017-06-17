@@ -495,12 +495,14 @@ extern "C" {
     pub fn sixel_output_ref(output: *mut Output);
     pub fn sixel_output_unref(output: *mut Output);
     pub fn sixel_output_get_8bit_availability(output: *mut Output) -> c_int;
-    pub fn sixel_output_set_8bit_availability(output: *mut Output, availability: c_int);
+    pub fn sixel_output_set_8bit_availability(output: *mut Output, availability: CharacterSize);
+    // max value of `value` is 255
     pub fn sixel_output_set_gri_arg_limit(output: *mut Output, value: c_int);
+    // penetrate acts like a bool
     pub fn sixel_output_set_penetrate_multiplexer(output: *mut Output, penetrate: c_int);
     pub fn sixel_output_set_skip_dcs_envelope(output: *mut Output, skip: c_int);
-    pub fn sixel_output_set_palette_type(output: *mut Output, palettetype: c_int);
-    pub fn sixel_output_set_encode_policy(output: *mut Output, encode_policy: c_int);
+    pub fn sixel_output_set_palette_type(output: *mut Output, palettetype: PaletteType);
+    pub fn sixel_output_set_encode_policy(output: *mut Output, encode_policy: EncodePolicy);
 }
 
 pub enum Dither {}
@@ -510,7 +512,7 @@ extern "C" {
                             allocator: *mut Allocator)
                             -> Status;
     pub fn sixel_dither_create(ncolors: c_int) -> *mut Dither;
-    pub fn sixel_dither_get(builtin_dither: c_int) -> *mut Dither;
+    pub fn sixel_dither_get(builtin_dither: BuiltinDither) -> *mut Dither;
     pub fn sixel_dither_destroy(dither: *mut Dither);
     pub fn sixel_dither_ref(dither: *mut Dither);
     pub fn sixel_dither_unref(dither: *mut Dither);
@@ -518,24 +520,27 @@ extern "C" {
                                    data: *mut c_uchar,
                                    width: c_int,
                                    height: c_int,
-                                   pixelformat: c_int,
-                                   method_for_largest: c_int,
-                                   method_for_rep: c_int,
-                                   quality_mode: c_int)
+                                   pixelformat: PixelFormat,
+                                   method_for_largest: MethodForLargest,
+                                   method_for_rep: MethodForRepColor,
+                                   quality_mode: QualityMode)
                                    -> Status;
-    pub fn sixel_dither_set_diffusion_type(dither: *mut Dither, method_for_diffuse: c_int);
+    pub fn sixel_dither_set_diffusion_type(dither: *mut Dither, method_for_diffuse: DiffusionMethod);
     pub fn sixel_dither_get_num_of_palette_colors(dither: *mut Dither) -> c_int;
     pub fn sixel_dither_get_num_of_histogram_colors(dither: *mut Dither) -> c_int;
     pub fn sixel_dither_get_num_of_histgram_colors(dither: *mut Dither) -> c_int;
     pub fn sixel_dither_get_palette(dither: *mut Dither) -> *mut c_uchar;
     pub fn sixel_dither_set_palette(dither: *mut Dither, palette: *mut c_uchar);
     pub fn sixel_dither_set_complexion_score(dither: *mut Dither, score: c_int);
+    // `bodyonly` acts as a bool
     pub fn sixel_dither_set_body_only(dither: *mut Dither, bodyonly: c_int);
+    // `do_opt` acts as a bool
     pub fn sixel_dither_set_optimize_palette(dither: *mut Dither, do_opt: c_int);
-    pub fn sixel_dither_set_pixelformat(dither: *mut Dither, pixelformat: c_int);
+    pub fn sixel_dither_set_pixelformat(dither: *mut Dither, pixelformat: PixelFormat);
     pub fn sixel_dither_set_transparent(dither: *mut Dither, transparent: c_int);
 }
 extern "C" {
+    // `depth` is unused
     pub fn sixel_encode(pixels: *mut c_uchar,
                         width: c_int,
                         height: c_int,
@@ -543,6 +548,7 @@ extern "C" {
                         dither: *mut Dither,
                         context: *mut Output)
                         -> Status;
+    // `ncolors` <= 256
     pub fn sixel_decode_raw(p: *mut c_uchar,
                             len: c_int,
                             pixels: *mut *mut c_uchar,
@@ -566,11 +572,11 @@ extern "C" {
     pub fn sixel_helper_set_additional_message(message: *const c_char);
     pub fn sixel_helper_get_additional_message() -> *const c_char;
     pub fn sixel_helper_format_error(status: Status) -> *const c_char;
-    pub fn sixel_helper_compute_depth(pixelformat: c_int) -> c_int;
+    pub fn sixel_helper_compute_depth(pixelformat: PixelFormat) -> c_int;
     pub fn sixel_helper_normalize_pixelformat(dst: *mut c_uchar,
-                                              dst_pixelformat: *mut c_int,
+                                              dst_pixelformat: *mut PixelFormat,
                                               src: *const c_uchar,
-                                              src_pixelformat: c_int,
+                                              src_pixelformat: PixelFormat,
                                               width: c_int,
                                               height: c_int)
                                               -> Status;
@@ -578,10 +584,10 @@ extern "C" {
                                     src: *const c_uchar,
                                     srcw: c_int,
                                     srch: c_int,
-                                    pixelformat: c_int,
+                                    pixelformat: PixelFormat,
                                     dstw: c_int,
                                     dsth: c_int,
-                                    method_for_resampling: c_int,
+                                    method_for_resampling: ResamplingMethod,
                                     allocator: *mut Allocator)
                                     -> Status;
 }
@@ -596,7 +602,7 @@ extern "C" {
                             pixels: *mut c_uchar,
                             width: c_int,
                             height: c_int,
-                            pixelformat: c_int,
+                            pixelformat: PixelFormat,
                             palette: *mut c_uchar,
                             ncolors: c_int)
                             -> Status;
@@ -605,6 +611,7 @@ extern "C" {
     pub fn sixel_frame_get_width(frame: *mut Frame) -> c_int;
     pub fn sixel_frame_get_height(frame: *mut Frame) -> c_int;
     pub fn sixel_frame_get_ncolors(frame: *mut Frame) -> c_int;
+    // Should return a PixelFormat
     pub fn sixel_frame_get_pixelformat(frame: *mut Frame) -> c_int;
     pub fn sixel_frame_get_transparent(frame: *mut Frame) -> c_int;
     pub fn sixel_frame_get_multiframe(frame: *mut Frame) -> c_int;
@@ -615,7 +622,7 @@ extern "C" {
     pub fn sixel_frame_resize(frame: *mut Frame,
                               width: c_int,
                               height: c_int,
-                              method_for_resampling: c_int)
+                              method_for_resampling: ResamplingMethod)
                               -> Status;
     pub fn sixel_frame_clip(frame: *mut Frame,
                             x: c_int,
@@ -633,7 +640,7 @@ extern "C" {
                                         fuse_palette: c_int,
                                         reqcolors: c_int,
                                         bgcolor: *mut c_uchar,
-                                        loop_control: c_int,
+                                        loop_control: LoopMode,
                                         fn_load: LoadImageFn,
                                         finsecure: c_int,
                                         cancel_flag: *const c_int,
@@ -644,9 +651,9 @@ extern "C" {
                                          width: c_int,
                                          height: c_int,
                                          palette: *mut c_uchar,
-                                         pixelformat: c_int,
+                                         pixelformat: PixelFormat,
                                          filename: *const c_char,
-                                         imageformat: c_int,
+                                         imageformat: ImageFormat,
                                          allocator: *mut Allocator)
                                          -> Status;
 }
@@ -667,7 +674,7 @@ extern "C" {
                                       bytes: *mut c_uchar,
                                       width: c_int,
                                       height: c_int,
-                                      pixelformat: c_int,
+                                      pixelformat: PixelFormat,
                                       palette: *mut c_uchar,
                                       ncolors: c_int)
                                       -> Status;
