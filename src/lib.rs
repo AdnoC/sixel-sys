@@ -434,15 +434,14 @@ pub enum Optflag {
 }
 
 pub type sixel_malloc_t =
-    ::std::option::Option<unsafe extern "C" fn(size: usize)>;
+    Option<unsafe extern "C" fn(size: usize)>;
 pub type sixel_calloc_t =
-    ::std::option::Option<unsafe extern "C" fn(num_items: usize, size: usize)>;
+    Option<unsafe extern "C" fn(num_items: usize, size: usize)>;
 pub type sixel_realloc_t =
-    ::std::option::Option<unsafe extern "C" fn(object:
-                                                   *mut c_void,
+    Option<unsafe extern "C" fn(object: *mut c_void,
                                                new_size: usize)>;
 pub type sixel_free_t =
-    ::std::option::Option<unsafe extern "C" fn(object:
+    Option<unsafe extern "C" fn(object:
                                                    *mut c_void)>;
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
