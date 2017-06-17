@@ -255,7 +255,7 @@ pub enum ImageFormat {
     PNM = 8,
     GD2 = 9,
     PSD = 10,
-    FORMAT_HDR = 11,
+    HDR = 11,
 }
 
 #[repr(C)]
