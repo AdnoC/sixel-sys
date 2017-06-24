@@ -73,7 +73,7 @@ pub mod status {
     /// `malloc()` failed
     pub const BAD_ALLOCATION: Status = RUNTIME_ERROR | 0x0001;
     pub const BAD_ARGUMENT: Status = RUNTIME_ERROR | 0x0002;
-    pub const BAD_INPUT: Status = RUNTIME_ERROR | 0x0002;
+    pub const BAD_INPUT: Status = RUNTIME_ERROR | 0x0003;
 
     /// Feature not implemented
     pub const NOT_IMPLEMENTED: Status = FEATURE_ERROR | 0x0001;
