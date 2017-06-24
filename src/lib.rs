@@ -39,40 +39,42 @@ pub const PALETTE_MAX: u16 = 256;
 pub const USE_DEPRECATED_SYMBOLS: bool = true;
 
 
-// In impl crate: function to convert these to enums
+pub mod status {
+    // In impl crate: function to convert these to enums
 
-/// Describes why a function returned
-pub type Status = c_int;
+    /// Describes why a function returned
+    pub type Status = c_int;
 
-/// Suceeded
-pub const OK: Status = 0x0000;
-/// Failed
-///
-/// Renamed from "FALSE"
-pub const ERR: Status = 0x1000;
+    /// Suceeded
+    pub const OK: Status = 0x0000;
+    /// Failed
+    ///
+    /// Renamed from "FALSE"
+    pub const ERR: Status = 0x1000;
 
-pub const RUNTIME_ERROR: Status = ERR | 0x0100;
-pub const LOGIC_ERROR: Status = ERR | 0x0200;
-pub const FEATURE_ERROR: Status = ERR | 0x0300;
-pub const LIBC_ERROR: Status = ERR | 0x0400;
-pub const CURL_ERROR: Status = ERR | 0x0500;
-pub const JPEG_ERROR: Status = ERR | 0x0600;
-pub const PNG_ERROR: Status = ERR | 0x0700;
-pub const GDK_ERROR: Status = ERR | 0x0800;
-pub const GD_ERROR: Status = ERR | 0x0900;
-pub const STBI_ERROR: Status = ERR | 0x0a00;
-pub const STBIW_ERROR: Status = ERR | 0x0b00;
+    pub const RUNTIME_ERROR: Status = ERR | 0x0100;
+    pub const LOGIC_ERROR: Status = ERR | 0x0200;
+    pub const FEATURE_ERROR: Status = ERR | 0x0300;
+    pub const LIBC_ERROR: Status = ERR | 0x0400;
+    pub const CURL_ERROR: Status = ERR | 0x0500;
+    pub const JPEG_ERROR: Status = ERR | 0x0600;
+    pub const PNG_ERROR: Status = ERR | 0x0700;
+    pub const GDK_ERROR: Status = ERR | 0x0800;
+    pub const GD_ERROR: Status = ERR | 0x0900;
+    pub const STBI_ERROR: Status = ERR | 0x0a00;
+    pub const STBIW_ERROR: Status = ERR | 0x0b00;
 
-/// Interrupted by a signal
-pub const INTERRUPTED: Status = OK | 0x0001;
+    /// Interrupted by a signal
+    pub const INTERRUPTED: Status = OK | 0x0001;
 
-/// `malloc()` failed
-pub const BAD_ALLOCATION: Status = RUNTIME_ERROR | 0x0001;
-pub const BAD_ARGUMENT: Status = RUNTIME_ERROR | 0x0002;
-pub const BAD_INPUT: Status = RUNTIME_ERROR | 0x0002;
+    /// `malloc()` failed
+    pub const BAD_ALLOCATION: Status = RUNTIME_ERROR | 0x0001;
+    pub const BAD_ARGUMENT: Status = RUNTIME_ERROR | 0x0002;
+    pub const BAD_INPUT: Status = RUNTIME_ERROR | 0x0002;
 
-/// Feature not implemented
-pub const NOT_IMPLEMENTED: Status = FEATURE_ERROR | 0x0001;
+    /// Feature not implemented
+    pub const NOT_IMPLEMENTED: Status = FEATURE_ERROR | 0x0001;
+}
 
 #[repr(C)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
