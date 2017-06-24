@@ -38,8 +38,11 @@ pub const PALETTE_MAX: u16 = 256;
 
 pub const USE_DEPRECATED_SYMBOLS: bool = true;
 
+use status::Status;
 
 pub mod status {
+    use std::os::raw::c_int;
+
     // In impl crate: function to convert these to enums
 
     /// Describes why a function returned
