@@ -1,0 +1,2 @@
+#! /bin/sh
+echo "This is a dummy file to workaound a bug in rust 1.49.0. Run cargo build to build this crate."
