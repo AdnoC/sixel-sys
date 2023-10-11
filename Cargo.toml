@@ -22,7 +22,7 @@ curl-sys = { version = "0.3.11", optional = true}
 #libgd
 gdk-pixbuf-sys = { version = "0.3.4", optional = true}
 # Drop-in libjpeg replacement
-mozjpeg-sys = { version = "0.3.3", optional = true }
+mozjpeg-sys = { version = "2.0.2", optional = true }
 #libpng git: git://git.code.sf.net/p/libpng/code
 # png-sys = { git = , optional = true }
 
