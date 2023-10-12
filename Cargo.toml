@@ -1,9 +1,9 @@
 [package]
-name = "sixel-sys"
-version = "0.3.1"
+name = "sixel-sys-static"
+version = "0.3.2"
 authors = ["AdnoC <adam.r.cutler@gmail.com>"]
 
-description = "FFI bindings to libsixel"
+description = "FFI bindings to libsixel, static linkage"
 keywords = ["sixel", "libsixel", "image"]
 
 license = "MIT"
@@ -29,11 +29,13 @@ mozjpeg-sys = { version = "2.0.2", optional = true }
 [build-dependencies]
 make-cmd = "0.1.0"
 # bindgen = "0.23"
+pkg-config = "0.3.27"
 
 [dev-dependencies]
 lazy_static = "0.2.8"
 
 [features]
+default = ["static"]
 curl = ["curl-sys"]
 jpeg = ["mozjpeg-sys"]
 pixbuf = ["gdk-pixbuf-sys"]
@@ -43,4 +45,4 @@ gd = []
 # Maybe I should just turn this off regardless
 # 99% of the time it won't be needed
 python_interface = []
-
+static = []

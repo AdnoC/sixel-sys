@@ -2,6 +2,7 @@
 
 // extern crate bindgen;
 extern crate make_cmd;
+extern crate pkg_config;
 
 use make_cmd::make;
 
@@ -9,26 +10,31 @@ use std::env;
 use std::path::Path;
 use std::process::Command;
 
-
 const LIBSIXEL_DIR: &str = "libsixel";
 
 fn main() {
+    if !cfg!(feature = "static") {
+        if !pkg_config::probe_library("sixel").is_ok() {
+            panic!("sixel system library not found, try enabling the \"static\" feature to build and statically link a local version");
+        }
+        println!("cargo:rustc-link-lib=sixel");
+        return;
+    }
 
     let testing_build = false;
-
 
     let out_dir = env::var("OUT_DIR").unwrap();
     let out_dir = Path::new(&out_dir);
 
-    println!("cargo:rustc-link-lib=dylib=sixel");
-    // println!("cargo:rustc-link-lib=static=sixel");
-    println!("cargo:rustc-link-search=native={}", out_dir.join("lib").display());
-
+    println!("cargo:rustc-link-lib=static=sixel");
+    println!(
+        "cargo:rustc-link-search=native={}",
+        out_dir.join("lib").display()
+    );
 
     if testing_build {
         return;
     }
-
 
     let curl = has_feature("curl");
     let jpeg = has_feature("jpeg");
@@ -37,17 +43,15 @@ fn main() {
     let gd = has_feature("gd");
     let python_interface = has_feature("python_interface");
 
-
     let sixel_dir = Path::new(LIBSIXEL_DIR);
-
 
     {
         let mut cmd = Command::new("./configure");
         cmd.current_dir(sixel_dir)
             .arg("--prefix")
-            .arg(out_dir);
-
-        // cmd.arg("-fPIC");
+            .arg(out_dir)
+            .arg("--enable-static")
+            .env("CFLAGS", "-fPIE");
 
         if curl {
             cmd.arg("--with-libcurl");
@@ -69,17 +73,15 @@ fn main() {
         }
 
         cmd.status().expect("Failed to execute ./configure");
-          
+
         make()
             .arg("install")
             .current_dir(sixel_dir)
-            .status().expect("Failed to execute make");
-
+            .status()
+            .expect("Failed to execute make");
     }
 
     // generate_bindings(out_dir);
-    
-
 }
 
 // fn generate_bindings(out_dir: &Path) {
