@@ -1,15 +1,16 @@
-extern crate sixel_sys as sixel;
+extern crate sixel_sys_static as sixel;
 #[macro_use]
 extern crate lazy_static;
 
+use sixel::status::{Status, OK};
 #[allow(unused_imports)]
 use sixel::*;
 
-use std::path::Path;
 use std::ffi::CString;
+use std::path::Path;
 use std::sync::Mutex;
 
-lazy_static!{
+lazy_static! {
     pub static ref lock: Mutex<()> = Mutex::new(());
 }
 
@@ -51,9 +52,7 @@ fn image_root<'a>() -> &'a Path {
 }
 
 fn snake_of(extension: &str) -> CString {
-    let snake_path = image_root()
-        .join("snake")
-        .with_extension(extension);
+    let snake_path = image_root().join("snake").with_extension(extension);
 
     let snake_path = snake_path.to_str().unwrap();
 
@@ -77,19 +76,18 @@ fn convert_snake() {
     round_trip_with_ext("png");
 }
 
-
 fn round_trip_with_ext(extension: &str) {
-    use std::ptr;
     use std::os::raw::c_int;
     use std::os::raw::c_uint;
+    use std::ptr;
     println!("encoding with {}", extension);
 
     let assert_ok = |actual: Status| {
-        assert_eq!(sixel::OK,
-                   actual,
-                   "when de/encoding snake from a {} file, sixel returned the status {} instead of ok",
-                   extension,
-                   actual);
+        assert_eq!(
+            OK, actual,
+            "when de/encoding snake from a {} file, sixel returned the status {} instead of ok",
+            extension, actual
+        );
     };
 
     let snake_sixel = "snake_test_".to_owned() + extension + ".six";
@@ -103,14 +101,10 @@ fn round_trip_with_ext(extension: &str) {
         unsafe {
             let mut encoder: *mut sixel::Encoder = ptr::null_mut() as *mut _;
 
-            let result = sixel_encoder_new(&mut encoder,
-                                           ptr::null_mut() as *mut sixel::Allocator);
+            let result = sixel_encoder_new(&mut encoder, ptr::null_mut() as *mut sixel::Allocator);
             assert_ok(result);
 
-
-            let result = sixel_encoder_setopt(encoder,
-                                              Optflag::OutFile,
-                                              snake_six_out.as_ptr());
+            let result = sixel_encoder_setopt(encoder, Optflag::OutFile, snake_six_out.as_ptr());
             assert_ok(result);
 
             let snake_path = snake_of(extension);
@@ -124,19 +118,15 @@ fn round_trip_with_ext(extension: &str) {
         unsafe {
             let mut decoder: *mut sixel::Decoder = ptr::null_mut() as *mut _;
 
-            let result = sixel_decoder_new(&mut decoder,
-                                           ptr::null_mut() as *mut sixel::Allocator);
+            let result = sixel_decoder_new(&mut decoder, ptr::null_mut() as *mut sixel::Allocator);
             assert_ok(result);
 
-
-            let result = sixel_decoder_setopt(decoder,
-                                              DecoderOptflag::Input,
-                                              snake_six_out.as_ptr());
+            let result =
+                sixel_decoder_setopt(decoder, DecoderOptflag::Input, snake_six_out.as_ptr());
             assert_ok(result);
 
-            let result = sixel_decoder_setopt(decoder,
-                                              DecoderOptflag::Output,
-                                              snake_new_out.as_ptr());
+            let result =
+                sixel_decoder_setopt(decoder, DecoderOptflag::Output, snake_new_out.as_ptr());
             assert_ok(result);
 
             let result = sixel_decoder_decode(decoder);
@@ -147,5 +137,3 @@ fn round_trip_with_ext(extension: &str) {
     }
     print_sixel(snake_sixel);
 }
-
-
