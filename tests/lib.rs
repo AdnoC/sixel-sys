@@ -84,8 +84,8 @@ fn round_trip_with_ext(extension: &str) {
     use std::os::raw::c_uint;
     println!("encoding with {}", extension);
 
-    let assert_ok = |actual: Status| {
-        assert_eq!(sixel::OK,
+    let assert_ok = |actual: status::Status| {
+        assert_eq!(sixel::status::OK,
                    actual,
                    "when de/encoding snake from a {} file, sixel returned the status {} instead of ok",
                    extension,

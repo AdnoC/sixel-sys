@@ -64,11 +64,13 @@ fn main() {
         if png {
             cmd.arg("--with-png");
         }
-        if !python_interface {
-            cmd.arg("--without-python");
+        if python_interface {
+            cmd.arg("--enable-python");
         }
 
+	println!("RUNNING CONFIGURE");
         cmd.status().expect("Failed to execute ./configure");
+	println!("RAN CONFIGURE");
           
         make()
             .arg("install")
