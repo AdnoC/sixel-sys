@@ -20,9 +20,6 @@ fn main() {
     let out_dir = env::var("OUT_DIR").unwrap();
     let out_dir = Path::new(&out_dir);
 
-    println!("cargo:rustc-link-lib=dylib=sixel");
-    // println!("cargo:rustc-link-lib=static=sixel");
-    println!("cargo:rustc-link-search=native={}", out_dir.join("lib").display());
 
 
     if testing_build {
@@ -39,15 +36,21 @@ fn main() {
 
 
     let sixel_dir = Path::new(LIBSIXEL_DIR);
+    let sixel_build_dir = sixel_dir.join("build");
+    let sixel_build_dir_prefix = if std::env::var_os("CARGO_CFG_WINDOWS").is_some() {
+        println!("cargo::warning=Detected Windows compilation. Attempting to use MinGW compilers.");
+        sixel_prefix("build")
+    } else { sixel_build_dir.clone().into_os_string().into_string().expect("Could not convert OS path to utf8") };
 
 
-    {
-        let mut cmd = Command::new("./configure");
+    /*{
+        let mut cmd = Command::new("sh");
         cmd.current_dir(sixel_dir)
+            .arg("configure")
             .arg("--prefix")
-            .arg(out_dir);
+            .arg(sixel_build_dir_prefix);
 
-        // cmd.arg("-fPIC");
+        //cmd.arg("-fPIC");
 
         if curl {
             cmd.arg("--with-libcurl");
@@ -68,19 +71,25 @@ fn main() {
             cmd.arg("--enable-python");
         }
 
-	println!("RUNNING CONFIGURE");
         cmd.status().expect("Failed to execute ./configure");
-	println!("RAN CONFIGURE");
           
         make()
             .arg("install")
             .current_dir(sixel_dir)
             .status().expect("Failed to execute make");
 
-    }
+    }*/
+
+println!("cargo::warning=p1: {}", sixel_build_dir_prefix);
+println!("cargo::warning=p2: {}", sixel_build_dir.join("lib").display());
 
     // generate_bindings(out_dir);
-    
+    println!("cargo:rustc-link-lib=static=sixel");
+    // println!("cargo:rustc-link-lib=static=sixel");
+    println!("cargo:rustc-link-search=native={}", sixel_build_dir.display()); //out_dir.join(".libs").display());
+
+    println!("cargo:rustc-link-search=native={}", sixel_build_dir.join("lib").display()); //out_dir.join(".libs").display());
+
 
 }
 
@@ -103,4 +112,14 @@ fn has_feature(feature: &'static str) -> bool {
     let mut name = FEATURE_PREFIX.to_owned();
     name.push_str(&feature);
     env::var(name).is_ok()
+}
+
+fn sixel_prefix(directory: &str) -> String {
+    let cmd = Command::new("pwd").output().expect("Could not run `pwd`");
+    let base_path = std::str::from_utf8(&cmd.stdout)
+      .expect("Could not turn libsixel path into utf8")
+      .trim()
+      .to_string();
+    let path = base_path + "/" + LIBSIXEL_DIR + "/" + "build";
+    path
 }
