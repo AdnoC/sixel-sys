@@ -82,15 +82,15 @@ fn main() {
 
     }
 
-println!("cargo::warning=p1: {}", canonicalize(&sixel_build_dir_prefix.clone()));
-println!("cargo::warning=p2: {}", canonicalize(&sixel_build_dir.clone().join("lib")));
+println!("cargo::warning=p1: {}", canonicalize(&sixel_build_dir_prefix.clone()).unwrap());
+println!("cargo::warning=p2: {}", canonicalize(&sixel_build_dir.clone().join("lib")).unwrap());
 
     // generate_bindings(out_dir);
     println!("cargo:rustc-link-lib=static=sixel");
     // println!("cargo:rustc-link-lib=static=sixel");
-    println!("cargo:rustc-link-search=native={}", canonicalize(&sixel_build_dir.clone())); //out_dir.join(".libs").display());
+    println!("cargo:rustc-link-search=native={}", canonicalize(&sixel_build_dir.clone()).unwrap()); //out_dir.join(".libs").display());
 
-    println!("cargo:rustc-link-search=native={}", canonicalize(&sixel_build_dir.join("lib"))); //out_dir.join(".libs").display());
+    println!("cargo:rustc-link-search=native={}", canonicalize(&sixel_build_dir.join("lib")).unwrap()); //out_dir.join(".libs").display());
 
 
 }
