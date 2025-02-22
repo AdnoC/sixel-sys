@@ -42,8 +42,9 @@ fn main() {
 
 
     {
-        let mut cmd = Command::new("./configure");
+        let mut cmd = Command::new("sh");
         cmd.current_dir(sixel_dir)
+	    .arg("configure")
             .arg("--prefix")
             .arg(out_dir);
 
