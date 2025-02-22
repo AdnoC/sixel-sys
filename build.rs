@@ -49,7 +49,7 @@ fn main() {
             .arg("configure")
 
             .arg("--prefix")
-            .arg(sixel_build_dir_prefix);
+            .arg(sixel_build_dir_prefix.clone());
 
         //cmd.arg("-fPIC");
 
