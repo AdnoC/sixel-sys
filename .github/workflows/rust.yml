@@ -16,6 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Install autotools
+      run: sudo apt install automake libtool
     - name: Build
       run: cargo build --verbose
     - name: Run tests
