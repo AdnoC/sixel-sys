@@ -43,10 +43,11 @@ fn main() {
     } else { sixel_build_dir.clone().into_os_string().into_string().expect("Could not convert OS path to utf8") };
 
 
-    /*{
+    {
         let mut cmd = Command::new("sh");
         cmd.current_dir(sixel_dir)
             .arg("configure")
+
             .arg("--prefix")
             .arg(sixel_build_dir_prefix);
 
@@ -78,7 +79,7 @@ fn main() {
             .current_dir(sixel_dir)
             .status().expect("Failed to execute make");
 
-    }*/
+    }
 
 println!("cargo::warning=p1: {}", sixel_build_dir_prefix);
 println!("cargo::warning=p2: {}", sixel_build_dir.join("lib").display());
