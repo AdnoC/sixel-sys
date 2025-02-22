@@ -8,6 +8,10 @@
 //!
 //! For additional information, please check [its repo](https://github.com/saitoha/libsixel)
 
+#[cfg(feature = "png")]
+extern crate libpng_sys;
+#[cfg(feature = "png")]
+use libpng_sys as _;
 
 use std::os::raw::{c_void, c_int, c_char, c_uchar};
 

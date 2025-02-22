@@ -2,6 +2,7 @@
 
 // extern crate bindgen;
 extern crate make_cmd;
+extern crate autotools;
 
 use make_cmd::make;
 
@@ -9,6 +10,7 @@ use std::env;
 use std::path::Path;
 use std::fs::canonicalize;
 use std::process::Command;
+use autotools::Config;
 
 
 const LIBSIXEL_DIR: &str = "libsixel";
@@ -43,8 +45,50 @@ fn main() {
         sixel_prefix("build")
     } else { sixel_build_dir.clone().into_os_string().into_string().expect("Could not convert OS path to utf8") };
 
-
     {
+        let mut bld = Config::new("libsixel");
+        if curl {
+            bld.with("libcurl", None);
+        } else {
+            bld.without("libcurl", None);
+        }
+        if gd {
+            bld.with("gd", None);
+        } else {
+            bld.without("gd", None);
+        }
+        if pixbuf {
+            bld.with("gdk-pixbuf", None);
+        } else {
+            bld.without("gdk-pixbuff", None);
+        }
+        if jpeg {
+            bld.with("jpeg", None);
+        } else {
+            bld.without("jpeg", None);
+        }
+        if png {
+            bld.with("png", None);
+        println!("cargo::warning=WITH PNG");
+        } else {
+        println!("cargo::warning=WITHOUT PNG");
+            bld.without("png", None);
+        }
+        if python_interface {
+            bld.enable("python", None);
+        } else {
+            bld.disable("python", None);
+        }
+
+        let dst = bld
+            .reconf("-ivf")
+            .build();
+println!("cargo::warning={}", dst.display());
+        println!("cargo:rustc-link-search=native={}", dst.join("lib").display());
+        println!("cargo:rustc-link-lib=static=sixel");
+    }
+
+    /*{
         let mut cmd = Command::new("sh");
         cmd.current_dir(sixel_dir)
             .arg("configure")
@@ -92,6 +136,7 @@ println!("cargo::warning=p2: {}", canonicalize(&sixel_build_dir.clone().join("li
 
     println!("cargo:rustc-link-search=native={}", canonicalize(&sixel_build_dir.join("lib")).unwrap()); //out_dir.join(".libs").display());
 
+*/
 
 }
 
