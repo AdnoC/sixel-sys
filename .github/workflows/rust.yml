@@ -45,7 +45,7 @@ jobs:
         submodules: 'true'
     - uses: msys2/setup-msys2@v2
     - shell: msys2 {0}
-      run: pacman -S --noconfirm base-devel
+      run: pacman -S --noconfirm base-devel rust
     - shell: msys2 {0}
       name: Build
       run: cargo build --verbose
