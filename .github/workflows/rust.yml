@@ -44,7 +44,7 @@ jobs:
       with:
         submodules: 'true'
     - name: Install autotools
-      run: pacman -S base-devel
+      run: choco install make
     - name: Build
       run: cargo build --verbose
     - name: Run tests
