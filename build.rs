@@ -45,7 +45,22 @@ fn main() {
         sixel_prefix("build")
     } else { sixel_build_dir.clone().into_os_string().into_string().expect("Could not convert OS path to utf8") };
 
-    {
+    if cfg!(windows) {
+        // https://github.com/AdnoC/sixel-sys/issues/1#issuecomment-3124493822
+
+        // Path to your Cygwin installation
+        let cygwin_prefix = Path::new("C:/msys64/mingw64/");
+
+        // Link to the prebuilt libsixel
+        println!("cargo:rustc-link-search=native={}/lib", cygwin_prefix.display());
+        println!("cargo:rustc-link-lib=sixel"); // or "sixel-static" if you have a static lib
+
+        // Optionally, tell bindgen where to find headers
+        println!("cargo:include={}/include", cygwin_prefix.display());
+
+        // Only rerun build.rs if the library changes
+        println!("cargo:rerun-if-changed={}/lib/libsixel.a", cygwin_prefix.display());
+    } else {
         let mut bld = Config::new("libsixel");
         if curl {
             bld.with("libcurl", None);
@@ -83,7 +98,6 @@ fn main() {
         let dst = bld
             .reconf("-ivf")
             .build();
-println!("cargo::warning={}", dst.display());
         println!("cargo:rustc-link-search=native={}", dst.join("lib").display());
         println!("cargo:rustc-link-lib=static=sixel");
     }
@@ -162,11 +176,7 @@ fn has_feature(feature: &'static str) -> bool {
 }
 
 fn sixel_prefix(directory: &str) -> String {
-    let cmd = Command::new("pwd").output().expect("Could not run `pwd`");
-    let base_path = std::str::from_utf8(&cmd.stdout)
-      .expect("Could not turn libsixel path into utf8")
-      .trim()
-      .to_string();
-    let path = base_path + "/" + LIBSIXEL_DIR + "/" + "build";
-    path
+    let cwd = env::current_dir().unwrap();
+    let path = cwd.join(LIBSIXEL_DIR).join("build");
+    path.display().to_string()
 }
