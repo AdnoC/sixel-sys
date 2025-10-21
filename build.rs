@@ -83,7 +83,6 @@ fn main() {
         let dst = bld
             .reconf("-ivf")
             .build();
-println!("cargo::warning={}", dst.display());
         println!("cargo:rustc-link-search=native={}", dst.join("lib").display());
         println!("cargo:rustc-link-lib=static=sixel");
     }
@@ -162,11 +161,7 @@ fn has_feature(feature: &'static str) -> bool {
 }
 
 fn sixel_prefix(directory: &str) -> String {
-    let cmd = Command::new("pwd").output().expect("Could not run `pwd`");
-    let base_path = std::str::from_utf8(&cmd.stdout)
-      .expect("Could not turn libsixel path into utf8")
-      .trim()
-      .to_string();
-    let path = base_path + "/" + LIBSIXEL_DIR + "/" + "build";
-    path
+    let cwd = env::current_dir().unwrap();
+    let path = cwd.join(LIBSIXEL_DIR).join("build");
+    path.display().to_string()
 }
