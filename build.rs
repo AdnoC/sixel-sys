@@ -45,22 +45,7 @@ fn main() {
         sixel_prefix("build")
     } else { sixel_build_dir.clone().into_os_string().into_string().expect("Could not convert OS path to utf8") };
 
-    if cfg!(windows) {
-        // https://github.com/AdnoC/sixel-sys/issues/1#issuecomment-3124493822
-
-        // Path to your Cygwin installation
-        let cygwin_prefix = Path::new("C:/msys64/mingw64/");
-
-        // Link to the prebuilt libsixel
-        println!("cargo:rustc-link-search=native={}/lib", cygwin_prefix.display());
-        println!("cargo:rustc-link-lib=sixel"); // or "sixel-static" if you have a static lib
-
-        // Optionally, tell bindgen where to find headers
-        println!("cargo:include={}/include", cygwin_prefix.display());
-
-        // Only rerun build.rs if the library changes
-        println!("cargo:rerun-if-changed={}/lib/libsixel.a", cygwin_prefix.display());
-    } else {
+    {
         let mut bld = Config::new("libsixel");
         if curl {
             bld.with("libcurl", None);
