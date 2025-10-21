@@ -46,7 +46,7 @@ jobs:
     - uses: msys2/setup-msys2@v2
     - shell: msys2 {0}
       run: |
-        pacman -S base-devel
+        pacman -S --noconfirm base-devel
     - name: Install autotools
       run: choco install make
     - name: Build
